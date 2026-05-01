@@ -161,6 +161,7 @@ public class App {
             System.out.println("\t3) Year to Date");
             System.out.println("\t4) Previous Year");
             System.out.println("\t5) Search by Vendor");
+            System.out.println("\t6) Custom Search");
             System.out.println("\t0) Go back to Ledger Screen");
             System.out.print("Enter your selection: ");
             int userOption = scanner.nextInt();
@@ -190,6 +191,8 @@ public class App {
                 case 5: //search by vendor
                     searchByVendor(scanner);
                     break;
+                case 6: //customer search
+                    customSearch(scanner);
                 case 0:   //go back to ledger screen
                     run = false;
                     break;
@@ -287,6 +290,46 @@ public class App {
 
         displayEntries(result, scanner);
     }
+
+    public static void customSearch(Scanner scanner) {
+        System.out.println("Custom Search (press Enter to skip any field)");
+
+        System.out.print("Start Date (yyyy-MM-dd): ");
+        String startInput = scanner.nextLine().trim();
+
+        System.out.print("End Date (yyyy-MM-dd): ");
+        String endInput = scanner.nextLine().trim();
+
+        System.out.print("Description: ");
+        String descInput = scanner.nextLine().trim().toLowerCase();
+
+        System.out.print("Vendor: ");
+        String vendorInput = scanner.nextLine().trim().toLowerCase();
+
+        System.out.print("Amount (leave blank to skip): ");
+        String amountInput = scanner.nextLine().trim();
+
+        LocalDate startDate = startInput.isEmpty() ? null : LocalDate.parse(startInput);
+        LocalDate endDate   = endInput.isEmpty()   ? null : LocalDate.parse(endInput);
+        Double amount       = amountInput.isEmpty() ? null : Double.parseDouble(amountInput);
+
+        ArrayList<Transaction> result = new ArrayList<>();
+
+        for (Transaction t : loadTransactions()) {
+            LocalDate tDate = LocalDate.parse(t.getDate());
+
+            if (startDate != null && tDate.isBefore(startDate)) continue;
+            if (endDate   != null && tDate.isAfter(endDate))    continue;
+            if (!descInput.isEmpty()   && !t.getDescription().toLowerCase().contains(descInput))  continue;
+            if (!vendorInput.isEmpty() && !t.getVendor().toLowerCase().contains(vendorInput))     continue;
+            if (amount != null && t.getAmount() != amount)                                        continue;
+
+            result.add(t);
+        }
+
+        displayEntries(result, scanner);
+    }
+
 
     public static String csvFormat(Transaction t) {
         return String.format("%s|%s|%s|%s|%.2f",
