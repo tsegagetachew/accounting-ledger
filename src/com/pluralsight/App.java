@@ -13,9 +13,20 @@ public class App {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to the Accounting Ledger!");
+        splashScreen();
         homeScreen(scanner);
     }
+
+    public static void splashScreen() {
+        System.out.println("╔══════════════════════════════════════════════╗");
+        System.out.println("║                                              ║");
+        System.out.println("║   💰  WELCOME TO YOUR PERSONAL ACCOUNTING    ║");
+        System.out.println("║                  LEDGER  💰                  ║");
+        System.out.println("║                                              ║");
+        System.out.println("╚══════════════════════════════════════════════╝");
+        System.out.println();
+    }
+
 
     public static void homeScreen(Scanner scanner) {
         boolean run = true;
