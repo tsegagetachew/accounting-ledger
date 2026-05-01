@@ -171,26 +171,26 @@ public class App {
             LocalDate today = LocalDate.now();
 
             switch (userOption) {
-                case 1:
+                case 1:   //month to date
                     filterByDateRange(today.withDayOfMonth(1), today, scanner);
                     break;
-                case 2:
+                case 2:    //previous month
                     LocalDate prevMonthStart = today.minusMonths(1).withDayOfMonth(1);
                     LocalDate prevMonthEnd = prevMonthStart.withDayOfMonth(prevMonthStart.lengthOfMonth());
                     filterByDateRange(prevMonthStart, prevMonthEnd, scanner);
                     break;
-                case 3:
+                case 3:  //year to date
                     filterByDateRange(today.withDayOfYear(1), today, scanner);
                     break;
-                case 4:
+                case 4: //previous year
                     LocalDate prevYearStart = today.minusYears(1).withDayOfYear(1);
                     LocalDate prevYearEnd = prevYearStart.withDayOfYear(prevYearStart.lengthOfYear());
                     filterByDateRange(prevYearStart, prevYearEnd, scanner);
                     break;
-                case 5:
+                case 5: //search by vendor
                     searchByVendor(scanner);
                     break;
-                case 0:
+                case 0:   //go back to ledger screen
                     run = false;
                     break;
                 default:
@@ -227,7 +227,7 @@ public class App {
             }
             buffReader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error saving transaction: " + e.getMessage());
         }
 
         return transactions;
@@ -242,7 +242,8 @@ public class App {
             buffWriter.flush();
             buffWriter.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error saving transaction: " + e.getMessage());
+
         }
     }
 
